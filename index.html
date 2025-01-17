@@ -25,6 +25,9 @@
 const rodrigo = document.querySelector('.rodrigo');
 const tubu = document.querySelector('.tubu');
 
+// Defina as imagens para os estados do personagem
+const rodrigoImage = rodrigo.querySelector('img'); // Supondo que "rodrigo" seja uma tag <div> com uma <img> dentro
+
 const jump = () => {
     if (!rodrigo.classList.contains('jump')) { // Impede múltiplos pulos simultâneos
         rodrigo.classList.add('jump');
@@ -50,7 +53,7 @@ const checkCollision = setInterval(() => {
 
     // Ajuste para reduzir a área de colisão do tubu
     const collisionAreaStart = 0; // Início da área de colisão (em px)
-    const collisionAreaEnd = 65; // Fim da área de colisão (em px)
+    const collisionAreaEnd = 60; // Fim da área de colisão (em px)
 
     // Verifica se o rodrigo está na área de colisão e se a altura do rodrigo está perto do topo do tubu
     if (tubuLeft > collisionAreaStart && tubuLeft < collisionAreaEnd && rodrigoBottom <= tubuHeight) {
@@ -61,10 +64,11 @@ const checkCollision = setInterval(() => {
         // Para a animação do personagem
         rodrigo.style.animation = 'none';
         rodrigo.style.bottom = `${rodrigoBottom}px`; // Mantém o personagem na posição atual
-        rodrigoImage.src = '';
 
+        // Muda a imagem do rodrigo (por exemplo, para a imagem de "game over")
+        rodrigo.src = './imagens/morto1.png'; // Troque pelo caminho da imagem desejada
+        
         clearInterval(checkCollision); // Interrompe o loop de verificação
-        alert('Game Over!'); // Exibe a mensagem de fim de jogo
 
         // Remove o listener de teclas para impedir novas ações
         document.removeEventListener('keydown', jump);
