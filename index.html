@@ -22,13 +22,54 @@
     
 </body>
 <script>
-      const rodrigo = document.querySelector('.rodrigo');
+const rodrigo = document.querySelector('.rodrigo');
+const tubu = document.querySelector('.tubu');
 
 const jump = () => {
-    rodrigo.classList.add('jump'); // Exemplo de funcionalidade
+    if (!rodrigo.classList.contains('jump')) { // Impede múltiplos pulos simultâneos
+        rodrigo.classList.add('jump');
+
+        setTimeout(() => {
+            rodrigo.classList.remove('jump'); // Remove a classe após 500ms
+        }, 500);
+    }
 };
 
-document.addEventListener('keydown', jump);
+// Adiciona um listener para capturar teclas pressionadas
+document.addEventListener('keydown', (event) => {
+    if (event.code === 'Space' || event.code === 'ArrowUp') {
+        jump(); // Ativa o salto se a tecla for espaço ou seta para cima
+    }
+});
+
+// Sistema de colisão
+const checkCollision = setInterval(() => {
+    const rodrigoBottom = parseInt(window.getComputedStyle(rodrigo).getPropertyValue('bottom'));
+    const tubuLeft = parseInt(window.getComputedStyle(tubu).getPropertyValue('left'));
+    const tubuHeight = parseInt(window.getComputedStyle(tubu).getPropertyValue('height'));
+
+    // Ajuste para reduzir a área de colisão do tubu
+    const collisionAreaStart = 0; // Início da área de colisão (em px)
+    const collisionAreaEnd = 65; // Fim da área de colisão (em px)
+
+    // Verifica se o rodrigo está na área de colisão e se a altura do rodrigo está perto do topo do tubu
+    if (tubuLeft > collisionAreaStart && tubuLeft < collisionAreaEnd && rodrigoBottom <= tubuHeight) {
+        // Para a animação do tubu
+        tubu.style.animation = 'none';
+        tubu.style.left = `${tubuLeft}px`; // Mantém o tubu na posição atual
+
+        // Para a animação do personagem
+        rodrigo.style.animation = 'none';
+        rodrigo.style.bottom = `${rodrigoBottom}px`; // Mantém o personagem na posição atual
+        rodrigoImage.src = '';
+
+        clearInterval(checkCollision); // Interrompe o loop de verificação
+        alert('Game Over!'); // Exibe a mensagem de fim de jogo
+
+        // Remove o listener de teclas para impedir novas ações
+        document.removeEventListener('keydown', jump);
+    }
+}, 10); // Verifica a colisão a cada 10ms
 
 </script>
 
