@@ -5,14 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>rodrigo´s game</title>
 
-    <link rel="stylesheet" href="/css/style.css">
-
-    <script src="js/script.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    
+    
 
 </head>
 <body>
 
-    <div class="game-board"></div>
+    <div class="game-board">
+
+        <img src="imagens/tube.png" class="tubu">
+
+        <img src="imagens/rodrigo.png" class="rodrigo">
+
+    </div>
     
 </body>
+<script>
+      const rodrigo = document.querySelector('.rodrigo');
+
+const jump = () => {
+    rodrigo.classList.add('jump'); // Exemplo de funcionalidade
+};
+
+document.addEventListener('keydown', jump);
+
+</script>
+
 </html> 

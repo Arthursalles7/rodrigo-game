@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,6 +8,46 @@
     width: 80%;
     height: 500px;
     border: 1px solid #333;
-    margin: 0;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
 
+.tubu {
+    position: absolute;
+    bottom: 0;
+    width: 80px;
+    right: -80px;
+    animation: tubu-animation 2s infinite linear;
+}
+
+.rodrigo {
+    width: 150px;
+    position: absolute;
+    bottom: 0;
+}
+
+.jump {
+    animation: pulinho 500ms ease-out;
+}
+
+@keyframes tubu-animation {
+    from {
+        right: -80px;
+    }
+    to {
+        right: 100%;
+    }
+}
+
+@keyframes pulinho {
+    0% {
+        bottom: 0px;
+    }
+    40%, 50%, 60% {
+        bottom: 100px;
+    }
+    100% {
+        bottom: 0px;
+    }
 }
