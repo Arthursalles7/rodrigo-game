@@ -62,12 +62,7 @@ body {
     display: none;
 }
 
-.morto {
-    display: none;
-    width: 100px; /* Ajuste o tamanho conforme necessário */
-    position: absolute;
-    bottom: 0; 
-}
+
 
 .tubu {
     padding: 0;

@@ -10,23 +10,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Tela Inicial -->
     <div id="start-screen">
         <img src="imagens/rodrigotitle.jpg" alt="Imagem do Jogo" style="width: 200px; margin-bottom: 20px;">
         <h1 style="font-family: 'Sixtyfour Convergence', sans-serif;">Rodrigo's Game</h1>
         <button id="start-button">Iniciar Jogo</button>
     </div>
 
-    <!-- Tela do Jogo -->
     <div class="game-board hidden" id="game-board">
         <img src="imagens/tube.png" class="tubu">
         <img src="imagens/rodrigo.png" class="rodrigo">
         <img src="imagens/morto1.png" class="morto" id="rodrigo-morto" style="display: none;">
+        <div id="score" style="position: absolute; top: 20px; left: 20px; font-size: 24px; color: white;">Pontos: 0</div>
     </div>
 
-    <!-- Tela de Game Over -->
     <div id="game-over-screen" class="hidden">
         <h1>Game Over</h1>
+        <img src="imagens/morto1.png" class="morto" id="morto-gameover">
         <button id="restart-button">Reiniciar Jogo</button>
     </div>
 
@@ -39,23 +38,25 @@
         const gameOverScreen = document.getElementById('game-over-screen');
         const restartButton = document.getElementById('restart-button');
         const rodrigoMorto = document.getElementById('rodrigo-morto');
+        const mortoGameover = document.getElementById('morto-gameover');
+        const scoreDisplay = document.getElementById('score');
 
-        // Iniciar Jogo
+        let score = 0;
+        let passedTubu = false; // Variável para verificar se o Rodrigo passou pelo tubo
+
         startButton.addEventListener('click', () => {
-            startScreen.style.display = 'none'; // Oculta a tela inicial
-            gameBoard.classList.remove('hidden'); // Exibe a tela do jogo
-            gameOverScreen.classList.add('hidden'); // Oculta a tela de Game Over
-            resetGame(); // Reseta o jogo
+            startScreen.style.display = 'none';
+            gameBoard.classList.remove('hidden');
+            gameOverScreen.classList.add('hidden');
+            resetGame();
         });
 
-        // Reiniciar Jogo
         restartButton.addEventListener('click', () => {
             gameOverScreen.classList.add('hidden');
             gameBoard.classList.remove('hidden');
             resetGame();
         });
 
-        // Função de Pulo
         const jump = () => {
             if (!rodrigo.classList.contains('jump')) {
                 rodrigo.classList.add('jump');
@@ -65,14 +66,12 @@
             }
         };
 
-        // Detecção de Pulo
         document.addEventListener('keydown', (event) => {
             if (event.code === 'Space' || event.code === 'ArrowUp') {
                 jump();
             }
         });
 
-        // Checagem de Colisão
         const checkCollision = setInterval(() => {
             const rodrigoBottom = parseInt(window.getComputedStyle(rodrigo).getPropertyValue('bottom'));
             const tubuLeft = parseInt(window.getComputedStyle(tubu).getPropertyValue('left'));
@@ -82,33 +81,47 @@
 
             // Verifica se houve colisão
             if (tubuLeft > collisionAreaStart && tubuLeft < collisionAreaEnd && rodrigoBottom <= tubuHeight) {
-                gameOver(); // Se colidir, ativa a tela de Game Over
+                gameOver();
+            }
+
+            // Verifica se o Rodrigo passou pelo tubo
+            if (tubuLeft < -50 && !passedTubu) {
+                score++; // Aumenta a pontuação
+                scoreDisplay.textContent = `Pontos: ${score}`; // Atualiza a exibição da pontuação
+                passedTubu = true; // Marca que o Rodrigo passou pelo tubo
+            }
+
+            // Reseta o "passou pelo tubo" quando o tubo sai completamente da tela
+            if (tubuLeft <= -100) {
+                passedTubu = false; // Reseta a variável quando o tubo saiu completamente da tela
             }
         }, 10);
 
-        // Função de Game Over
         function gameOver() {
-            rodrigoMorto.style.display = 'block'; // Exibe a imagem de "Rodrigo morto" na tela de jogo
+            rodrigoMorto.style.display = 'block';
+            mortoGameover.style.display = 'block';
             tubu.style.animation = 'none'; // Para a animação do tubo
             gameBoard.classList.add('hidden');
             gameOverScreen.classList.remove('hidden');
         }
 
-        // Resetar o Jogo
         function resetGame() {
-            rodrigo.style.bottom = '0px'; // Reseta a posição de Rodrigo
-            rodrigo.src = 'imagens/rodrigo.png'; // Reseta a imagem de Rodrigo
-            rodrigoMorto.style.display = 'none'; // Oculta a imagem de "Rodrigo morto"
-            tubu.style.animation = 'none'; // Interrompe a animação do tubo
-            tubu.style.left = '100%'; // Coloca o tubo fora da tela à direita
+            score = 0; // Reseta a pontuação
+            scoreDisplay.textContent = `Pontos: ${score}`; // Atualiza a exibição da pontuação
+            passedTubu = false; // Reseta a variável que verifica se o Rodrigo passou pelo tubo
+            rodrigo.style.bottom = '0px';
+            rodrigo.src = 'imagens/rodrigo.png';
+            rodrigoMorto.style.display = 'none';
+            mortoGameover.style.display = 'none';
+            tubu.style.animation = 'none';
+            tubu.style.left = '100%';
 
-            // Garante que o tubo reinicie com a animação
             setTimeout(() => {
-                tubu.style.animation = 'tubu-animation 2s infinite linear'; // Reinicia a animação após um pequeno atraso
-            }, 50); // O atraso é para garantir que a animação seja reiniciada corretamente
+                tubu.style.animation = 'tubu-animation 2s infinite linear'; // Reinicia a animação do tubo
+            }, 50);
 
-            gameBoard.classList.remove('hidden'); // Exibe a tela do jogo novamente
-            gameOverScreen.classList.add('hidden'); // Oculta a tela de Game Over
+            gameBoard.classList.remove('hidden');
+            gameOverScreen.classList.add('hidden');
         }
     </script>
 </body>
