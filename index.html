@@ -5,21 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rodrigo's Game</title>
     <link rel="stylesheet" href="css/style.css">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Tela Inicial -->
     <div id="start-screen">
         <img src="imagens/rodrigotitle.jpg" alt="Imagem do Jogo" style="width: 200px; margin-bottom: 20px;">
         <h1 style="font-family: 'Sixtyfour Convergence', sans-serif;">Rodrigo's Game</h1>
         <button id="start-button">Iniciar Jogo</button>
     </div>
 
+    <!-- Tela do Jogo -->
     <div class="game-board hidden" id="game-board">
         <img src="imagens/tube.png" class="tubu">
         <img src="imagens/rodrigo.png" class="rodrigo">
+        <img src="imagens/morto1.png" class="morto" id="rodrigo-morto" style="display: none;">
+    </div>
+
+    <!-- Tela de Game Over -->
+    <div id="game-over-screen" class="hidden">
+        <h1>Game Over</h1>
+        <button id="restart-button">Reiniciar Jogo</button>
     </div>
 
     <script>
@@ -28,12 +36,26 @@
         const startScreen = document.getElementById('start-screen');
         const gameBoard = document.getElementById('game-board');
         const startButton = document.getElementById('start-button');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const restartButton = document.getElementById('restart-button');
+        const rodrigoMorto = document.getElementById('rodrigo-morto');
 
+        // Iniciar Jogo
         startButton.addEventListener('click', () => {
             startScreen.style.display = 'none'; // Oculta a tela inicial
-            gameBoard.classList.remove('hidden'); // Exibe o jogo
+            gameBoard.classList.remove('hidden'); // Exibe a tela do jogo
+            gameOverScreen.classList.add('hidden'); // Oculta a tela de Game Over
+            resetGame(); // Reseta o jogo
         });
 
+        // Reiniciar Jogo
+        restartButton.addEventListener('click', () => {
+            gameOverScreen.classList.add('hidden');
+            gameBoard.classList.remove('hidden');
+            resetGame();
+        });
+
+        // Função de Pulo
         const jump = () => {
             if (!rodrigo.classList.contains('jump')) {
                 rodrigo.classList.add('jump');
@@ -43,12 +65,14 @@
             }
         };
 
+        // Detecção de Pulo
         document.addEventListener('keydown', (event) => {
             if (event.code === 'Space' || event.code === 'ArrowUp') {
                 jump();
             }
         });
 
+        // Checagem de Colisão
         const checkCollision = setInterval(() => {
             const rodrigoBottom = parseInt(window.getComputedStyle(rodrigo).getPropertyValue('bottom'));
             const tubuLeft = parseInt(window.getComputedStyle(tubu).getPropertyValue('left'));
@@ -56,16 +80,36 @@
             const collisionAreaStart = 0;
             const collisionAreaEnd = 60;
 
+            // Verifica se houve colisão
             if (tubuLeft > collisionAreaStart && tubuLeft < collisionAreaEnd && rodrigoBottom <= tubuHeight) {
-                tubu.style.animation = 'none';
-                tubu.style.left = `${tubuLeft}px`;
-                rodrigo.style.animation = 'none';
-                rodrigo.style.bottom = `${rodrigoBottom}px`;
-                rodrigo.src = './imagens/morto1.png';
-                clearInterval(checkCollision);
-                document.removeEventListener('keydown', jump);
+                gameOver(); // Se colidir, ativa a tela de Game Over
             }
         }, 10);
+
+        // Função de Game Over
+        function gameOver() {
+            rodrigoMorto.style.display = 'block'; // Exibe a imagem de "Rodrigo morto" na tela de jogo
+            tubu.style.animation = 'none'; // Para a animação do tubo
+            gameBoard.classList.add('hidden');
+            gameOverScreen.classList.remove('hidden');
+        }
+
+        // Resetar o Jogo
+        function resetGame() {
+            rodrigo.style.bottom = '0px'; // Reseta a posição de Rodrigo
+            rodrigo.src = 'imagens/rodrigo.png'; // Reseta a imagem de Rodrigo
+            rodrigoMorto.style.display = 'none'; // Oculta a imagem de "Rodrigo morto"
+            tubu.style.animation = 'none'; // Interrompe a animação do tubo
+            tubu.style.left = '100%'; // Coloca o tubo fora da tela à direita
+
+            // Garante que o tubo reinicie com a animação
+            setTimeout(() => {
+                tubu.style.animation = 'tubu-animation 2s infinite linear'; // Reinicia a animação após um pequeno atraso
+            }, 50); // O atraso é para garantir que a animação seja reiniciada corretamente
+
+            gameBoard.classList.remove('hidden'); // Exibe a tela do jogo novamente
+            gameOverScreen.classList.add('hidden'); // Oculta a tela de Game Over
+        }
     </script>
 </body>
 </html>
