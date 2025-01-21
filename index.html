@@ -17,15 +17,15 @@
     </div>
 
     <div class="game-board hidden" id="game-board">
-        <img src="imagens/tube.png" class="tubu">
-        <img src="imagens/rodrigo.png" class="rodrigo">
-        <img src="imagens/morto.png" class="morto" id="rodrigo-morto" style="display: none;">
+        <img src="assets/imagens/tube.png" class="tubu">
+        <img src="assets/imagens/rodrigo.png" class="rodrigo">
+        <img src="assets/imagens/morto.png" class="morto" id="rodrigo-morto" style="display: none;">
         <div id="score" style="position: absolute; top: 20px; left: 20px; font-size: 24px; color: white;">Pontos: 0</div>
     </div>
 
     <div id="game-over-screen" class="hidden">
         <h1>Game Over</h1>
-        <img src="imagens/morto.png" class="morto" id="morto-gameover">
+        <img src="assets/imagens/morto.png" class="morto" id="morto-gameover">
         <button id="restart-button">Reiniciar Jogo</button>
     </div>
 
@@ -101,7 +101,7 @@
             scoreDisplay.textContent = `Pontos: ${score}`;
             passedTubu = false;
             rodrigo.style.bottom = '0px';
-            rodrigo.src = 'imagens/rodrigo.png';
+            rodrigo.src = 'assets/imagens/rodrigo.png';
             rodrigoMorto.style.display = 'none';
             mortoGameover.style.display = 'none';
             tubu.style.animation = 'none';
