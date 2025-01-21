@@ -13,7 +13,7 @@ body {
     align-items: center;
     height: 100vh;
     overflow: hidden;
-    flex-direction: column; /* Organiza a imagem, título e botão em coluna */
+    flex-direction: column;
 }
 
 #start-screen {
@@ -43,9 +43,9 @@ body {
 }
 
 #start-screen img {
-    width: 200px; /* Ajuste o tamanho da imagem */
-    margin-bottom: 20px; /* Espaçamento entre a imagem e o título */
-    border-radius: 10px; /* Opcional: Arredonda as bordas da imagem */
+    width: 200px;
+    margin-bottom: 20px;
+    border-radius: 10px;
 }
 
 .game-board {
@@ -62,14 +62,12 @@ body {
     display: none;
 }
 
-
-
 .tubu {
     padding: 0;
     position: absolute;
     bottom: 0;
     width: 50px;
-    left: 100%; /* Corrigido para left */
+    left: 100%;
     animation: tubu-animation 2s infinite linear;
 }
 
@@ -89,10 +87,10 @@ body {
 
 @keyframes tubu-animation {
     from {
-        left: 100%; /* Começa fora da tela à direita */
+        left: 100%;
     }
     to {
-        left: -50px; /* Move o tubo para fora da tela à esquerda */
+        left: -50px;
     }
 }
 
