@@ -97,6 +97,7 @@ body {
     from {
         left: 100%;
     }
+
     to {
         left: -50px;
     }
@@ -106,9 +107,13 @@ body {
     0% {
         bottom: 0px;
     }
-    40%, 50%, 60% {
+
+    40%,
+    50%,
+    60% {
         bottom: 130px;
     }
+
     100% {
         bottom: 0px;
     }
