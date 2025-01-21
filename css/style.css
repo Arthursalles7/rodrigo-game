@@ -62,6 +62,14 @@ body {
     display: none;
 }
 
+.tube {
+    position: absolute;
+    bottom: 0;
+    width: 50px;
+    background-color: green;
+}
+
+
 .tubu {
     padding: 0;
     position: absolute;
