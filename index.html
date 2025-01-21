@@ -3,78 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>rodrigo´s game</title>
-
+    <title>Rodrigo's Game</title>
     <link rel="stylesheet" href="css/style.css">
     
-    
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <div class="game-board">
-
-        <img src="imagens/tube.png" class="tubu">
-
-        <img src="imagens/rodrigo.png" class="rodrigo">
-
+    <div id="start-screen">
+        <img src="imagens/rodrigotitle.jpg" alt="Imagem do Jogo" style="width: 200px; margin-bottom: 20px;">
+        <h1 style="font-family: 'Sixtyfour Convergence', sans-serif;">Rodrigo's Game</h1>
+        <button id="start-button">Iniciar Jogo</button>
     </div>
-    
+
+    <div class="game-board hidden" id="game-board">
+        <img src="imagens/tube.png" class="tubu">
+        <img src="imagens/rodrigo.png" class="rodrigo">
+    </div>
+
+    <script>
+        const rodrigo = document.querySelector('.rodrigo');
+        const tubu = document.querySelector('.tubu');
+        const startScreen = document.getElementById('start-screen');
+        const gameBoard = document.getElementById('game-board');
+        const startButton = document.getElementById('start-button');
+
+        startButton.addEventListener('click', () => {
+            startScreen.style.display = 'none'; // Oculta a tela inicial
+            gameBoard.classList.remove('hidden'); // Exibe o jogo
+        });
+
+        const jump = () => {
+            if (!rodrigo.classList.contains('jump')) {
+                rodrigo.classList.add('jump');
+                setTimeout(() => {
+                    rodrigo.classList.remove('jump');
+                }, 500);
+            }
+        };
+
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space' || event.code === 'ArrowUp') {
+                jump();
+            }
+        });
+
+        const checkCollision = setInterval(() => {
+            const rodrigoBottom = parseInt(window.getComputedStyle(rodrigo).getPropertyValue('bottom'));
+            const tubuLeft = parseInt(window.getComputedStyle(tubu).getPropertyValue('left'));
+            const tubuHeight = parseInt(window.getComputedStyle(tubu).getPropertyValue('height'));
+            const collisionAreaStart = 0;
+            const collisionAreaEnd = 60;
+
+            if (tubuLeft > collisionAreaStart && tubuLeft < collisionAreaEnd && rodrigoBottom <= tubuHeight) {
+                tubu.style.animation = 'none';
+                tubu.style.left = `${tubuLeft}px`;
+                rodrigo.style.animation = 'none';
+                rodrigo.style.bottom = `${rodrigoBottom}px`;
+                rodrigo.src = './imagens/morto1.png';
+                clearInterval(checkCollision);
+                document.removeEventListener('keydown', jump);
+            }
+        }, 10);
+    </script>
 </body>
-<script>
-const rodrigo = document.querySelector('.rodrigo');
-const tubu = document.querySelector('.tubu');
-
-// Defina as imagens para os estados do personagem
-const rodrigoImage = rodrigo.querySelector('img'); // Supondo que "rodrigo" seja uma tag <div> com uma <img> dentro
-
-const jump = () => {
-    if (!rodrigo.classList.contains('jump')) { // Impede múltiplos pulos simultâneos
-        rodrigo.classList.add('jump');
-
-        setTimeout(() => {
-            rodrigo.classList.remove('jump'); // Remove a classe após 500ms
-        }, 500);
-    }
-};
-
-// Adiciona um listener para capturar teclas pressionadas
-document.addEventListener('keydown', (event) => {
-    if (event.code === 'Space' || event.code === 'ArrowUp') {
-        jump(); // Ativa o salto se a tecla for espaço ou seta para cima
-    }
-});
-
-// Sistema de colisão
-const checkCollision = setInterval(() => {
-    const rodrigoBottom = parseInt(window.getComputedStyle(rodrigo).getPropertyValue('bottom'));
-    const tubuLeft = parseInt(window.getComputedStyle(tubu).getPropertyValue('left'));
-    const tubuHeight = parseInt(window.getComputedStyle(tubu).getPropertyValue('height'));
-
-    // Ajuste para reduzir a área de colisão do tubu
-    const collisionAreaStart = 0; // Início da área de colisão (em px)
-    const collisionAreaEnd = 60; // Fim da área de colisão (em px)
-
-    // Verifica se o rodrigo está na área de colisão e se a altura do rodrigo está perto do topo do tubu
-    if (tubuLeft > collisionAreaStart && tubuLeft < collisionAreaEnd && rodrigoBottom <= tubuHeight) {
-        // Para a animação do tubu
-        tubu.style.animation = 'none';
-        tubu.style.left = `${tubuLeft}px`; // Mantém o tubu na posição atual
-
-        // Para a animação do personagem
-        rodrigo.style.animation = 'none';
-        rodrigo.style.bottom = `${rodrigoBottom}px`; // Mantém o personagem na posição atual
-
-        // Muda a imagem do rodrigo (por exemplo, para a imagem de "game over")
-        rodrigo.src = './imagens/morto1.png'; // Troque pelo caminho da imagem desejada
-        
-        clearInterval(checkCollision); // Interrompe o loop de verificação
-
-        // Remove o listener de teclas para impedir novas ações
-        document.removeEventListener('keydown', jump);
-    }
-}, 10); // Verifica a colisão a cada 10ms
-
-</script>
-
-</html> 
+</html>
