@@ -7,7 +7,7 @@ const startButton = document.getElementById('start-button'); // Botão para inic
 const gameOverScreen = document.getElementById('game-over-screen'); // Tela de "Game Over"
 const restartButton = document.getElementById('restart-button'); // Botão para reiniciar o jogo
 const rodrigoMorto = document.getElementById('rodrigo-morto'); // Imagem do personagem após a derrota
-const mortoGameover = document.getElementById('morto-gameover'); // Imagem de "Game Over" com personagem
+const mortoGameover = document.getElementById('morto-gameover'); // Imagem de "Game Over"
 const scoreDisplay = document.getElementById('score'); // Exibição da pontuação
 
 // Variáveis para controle de estado do jogo
@@ -46,22 +46,27 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-// Intervalo para verificar colisão constantemente
+// Intervalo para verificar colisão e ultrapassagem de obstáculo
 const checkCollision = setInterval(() => {
     const rodrigoBottom = parseInt(window.getComputedStyle(rodrigo).getPropertyValue('bottom')); // Posição do personagem
     const tubuLeft = parseInt(window.getComputedStyle(tubu).getPropertyValue('left')); // Posição do obstáculo
     const tubuHeight = parseInt(window.getComputedStyle(tubu).getPropertyValue('height')); // Altura do obstáculo
-    const collisionAreaStart = 0; // Início da área de colisão
-    const collisionAreaEnd = 60; // Fim da área de colisão
 
     // Verifica se há colisão entre o personagem e o obstáculo
-    if (tubuLeft > collisionAreaStart && tubuLeft < collisionAreaEnd && rodrigoBottom <= tubuHeight) {
+    if (tubuLeft > 0 && tubuLeft < 60 && rodrigoBottom <= tubuHeight) {
         gameOver(); // Finaliza o jogo em caso de colisão
+    }
+
+    // Verifica se o personagem ultrapassou o obstáculo com sucesso
+    if (tubuLeft < 0 && !passedTubu) {
+        passedTubu = true; // Marca que o obstáculo foi ultrapassado
+        score++; // Incrementa a pontuação
+        scoreDisplay.textContent = `Pontos: ${score}`; // Atualiza a exibição da pontuação
     }
 
     // Reseta o estado do obstáculo se ele já saiu completamente da tela
     if (tubuLeft <= -100) {
-        passedTubu = false;
+        passedTubu = false; // Permite que o próximo obstáculo seja contado
     }
 }, 10); // Verificação a cada 10ms
 
@@ -94,6 +99,3 @@ function resetGame() {
     gameBoard.classList.remove('hidden'); // Mostra a tela do jogo
     gameOverScreen.classList.add('hidden'); // Esconde a tela de "Game Over"
 }
-
-
-//deixando tudo comentado para não esquecer depois.
