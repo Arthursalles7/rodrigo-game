@@ -62,13 +62,13 @@ body {
     display: none;
 }
 
-.tubu {
+.tubo {
     padding: 0;
     position: absolute;
     bottom: 0;
     width: 50px;
     left: 100%;
-    animation: tubu-animation 2s infinite linear;
+    animation: tubo-animation 2s infinite linear;
 }
 
 .rodrigo {
@@ -85,7 +85,7 @@ body {
     animation: pulinho 500ms ease-out;
 }
 
-@keyframes tubu-animation {
+@keyframes tubo-animation {
     from {
         left: 100%;
     }
