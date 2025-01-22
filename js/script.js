@@ -80,7 +80,7 @@ function resetGame() {
     scoreDisplay.textContent = `Pontos: ${score}`; // Atualiza a exibição da pontuação
     passedTubu = false; // Reseta a variável de controle de passagem pelo obstáculo
     rodrigo.style.bottom = '0px'; // Posiciona o personagem no chão
-    rodrigo.src = 'imagens/rodrigo.png'; // Volta a imagem original do personagem
+    rodrigo.src = 'assets/images/rodrigo.png'; // Volta a imagem original do personagem
     rodrigoMorto.style.display = 'none'; // Esconde a imagem do personagem derrotado
     mortoGameover.style.display = 'none'; // Esconde a imagem de "Game Over"
     tubu.style.animation = 'none'; // Remove a animação do obstáculo
